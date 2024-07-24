@@ -2,10 +2,7 @@ package com.zerobase.restaurant.store.domain;
 
 import com.zerobase.restaurant.common.domain.BaseTimeEntity;
 import com.zerobase.restaurant.partner.domain.Partner;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -20,6 +17,8 @@ public class Store extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name="partner_id")
     private Partner partner;
 
     private String storeName;
