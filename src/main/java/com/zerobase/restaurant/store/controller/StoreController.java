@@ -1,6 +1,7 @@
 package com.zerobase.restaurant.store.controller;
 
 import com.zerobase.restaurant.store.dto.RegisterStore;
+import com.zerobase.restaurant.store.dto.UpdateStore;
 import com.zerobase.restaurant.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,15 @@ public class StoreController {
             @RequestBody RegisterStore.Request request
     ) {
         return RegisterStore.Response.from(this.storeService.registerStore(request));
+    }
+
+    @PutMapping("/partner/update/{storeId}")
+    @PreAuthorize("hasRole('PARTNER')")
+    public UpdateStore.Response updateStore(
+            @PathVariable Long storeId,
+            @RequestBody UpdateStore.Request request
+    ) {
+        return UpdateStore.Response.from(this.storeService.updateStore(storeId, request));
     }
 
     @DeleteMapping("/partner/delete")

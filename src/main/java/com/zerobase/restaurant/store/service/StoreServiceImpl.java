@@ -6,6 +6,7 @@ import com.zerobase.restaurant.partner.repository.PartnerRepository;
 import com.zerobase.restaurant.store.domain.Store;
 import com.zerobase.restaurant.store.dto.RegisterStore;
 import com.zerobase.restaurant.store.dto.StoreDto;
+import com.zerobase.restaurant.store.dto.UpdateStore;
 import com.zerobase.restaurant.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,23 @@ public class StoreServiceImpl implements StoreService {
 
         log.info("매장 정보 삭제 완료");
         this.storeRepository.delete(store);
+    }
+
+    @Override
+    @Transactional
+    public StoreDto updateStore(Long storeId, UpdateStore.Request request) {
+        Store store = this.storeRepository.findById(storeId)
+                .orElseThrow(() -> new CustomException(STORE_NOT_FOUND));
+
+        if (!store.getPartner().getId().equals(request.getPartnerId())) {
+            throw new CustomException(STORE_NOT_MATCH_MANAGER);
+        }
+
+        store.setStoreName(request.getStoreName());
+        store.setAddress(request.getAddress());
+        store.setDescription(request.getDescription());
+
+        return StoreDto.fromEntity(this.storeRepository.save(store));
     }
 
     @Override
