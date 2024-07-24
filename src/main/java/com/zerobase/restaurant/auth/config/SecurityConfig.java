@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeRequests -> authorizeRequests.requestMatchers("/register/**", "/login/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                                .requestMatchers("/partner/**").hasRole("PARTNER")
+                                .requestMatchers("/store/partner/**").hasRole("PARTNER")
                 )
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
