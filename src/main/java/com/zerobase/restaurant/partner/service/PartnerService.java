@@ -7,5 +7,5 @@ public interface PartnerService {
 
     PartnerDto register(RegisterPartner user);
 
-    PartnerDto partnerDetail(Long userId);
+    PartnerDto detailPartner(Long userId);
 }

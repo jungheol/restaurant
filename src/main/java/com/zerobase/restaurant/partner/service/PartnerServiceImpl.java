@@ -11,8 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.zerobase.restaurant.common.type.ErrorCode.ALREADY_EXISTED_USER;
-import static com.zerobase.restaurant.common.type.ErrorCode.PARTNER_NOT_FOUND;
+import static com.zerobase.restaurant.common.type.ErrorCode.*;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +25,7 @@ public class PartnerServiceImpl implements PartnerService {
     public PartnerDto register(RegisterPartner user) {
         boolean exists = this.partnerRepository.existsByUsername(user.getUsername());
         if (exists) {
-            throw new CustomException(ALREADY_EXISTED_USER);
+            throw new CustomException(ALREADY_EXISTED_PARTNER);
         }
 
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
@@ -41,7 +40,7 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     @Override
-    public PartnerDto partnerDetail(Long userId) {
+    public PartnerDto detailPartner(Long userId) {
         Partner partner = this.partnerRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(PARTNER_NOT_FOUND));
 

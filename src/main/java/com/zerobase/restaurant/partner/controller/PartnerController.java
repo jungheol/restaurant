@@ -22,7 +22,7 @@ public class PartnerController {
 
     @GetMapping("/partner/info")
     public ResponseEntity<?> getPartnerInfo(@RequestParam("id") @Valid Long id) {
-        return ResponseEntity.ok(this.partnerService.partnerDetail(id));
+        return ResponseEntity.ok(this.partnerService.detailPartner(id));
     }
 
 
