@@ -55,4 +55,15 @@ public class StoreServiceImpl implements StoreService {
         log.info("매장 정보 삭제 완료");
         this.storeRepository.delete(store);
     }
+
+    @Override
+    public StoreDto detailStore(String storeName) {
+        Store store = checkStoreName(storeName);
+        return StoreDto.fromEntity(store);
+    }
+
+    private Store checkStoreName(String storeName) {
+        return this.storeRepository.findByStoreName(storeName)
+                .orElseThrow(() -> new CustomException(STORE_NOT_FOUND));
+    }
 }

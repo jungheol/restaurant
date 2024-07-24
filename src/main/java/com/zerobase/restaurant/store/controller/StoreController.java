@@ -31,4 +31,10 @@ public class StoreController {
         this.storeService.deleteStore(storeId, partnerId);
         return ResponseEntity.ok("매장 정보가 삭제되었습니다.");
     }
+
+    @GetMapping("/detail/{storeName}")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> detailStore(@PathVariable String storeName) {
+        return ResponseEntity.ok(this.storeService.detailStore(storeName));
+    }
 }

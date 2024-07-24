@@ -7,4 +7,6 @@ public interface StoreService {
     StoreDto registerStore(RegisterStore.Request request);
 
     void deleteStore(Long storeId, Long partnerId);
+
+    StoreDto detailStore(String storeName);
 }
