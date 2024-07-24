@@ -6,10 +6,10 @@ import com.zerobase.restaurant.partner.domain.Partner;
 import com.zerobase.restaurant.partner.dto.PartnerDto;
 import com.zerobase.restaurant.partner.dto.RegisterPartner;
 import com.zerobase.restaurant.partner.repository.PartnerRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.zerobase.restaurant.common.type.ErrorCode.ALREADY_EXISTED_USER;
 import static com.zerobase.restaurant.common.type.ErrorCode.PARTNER_NOT_FOUND;

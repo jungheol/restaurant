@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.zerobase.restaurant.common.type.ErrorCode.PARTNER_NOT_FOUND;
 import static com.zerobase.restaurant.common.type.ErrorCode.PASSWORD_NOT_MATCHED;
@@ -38,7 +39,9 @@ public class AuthService implements UserDetailsService {
         return this.partnerRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomException(PARTNER_NOT_FOUND));
     }
+
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws CustomException {
         if (this.partnerRepository.existsByUsername(username)) {
             Partner partner = checkPartnerName(username);
