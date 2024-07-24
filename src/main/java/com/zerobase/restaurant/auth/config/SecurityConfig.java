@@ -27,7 +27,7 @@ public class SecurityConfig {
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(
-                        authorizeRequests -> authorizeRequests.requestMatchers("/register/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        authorizeRequests -> authorizeRequests.requestMatchers("/register/**", "/login/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/customer/**").hasRole("CUSTOMER")
                                 .requestMatchers("/partner/**").hasRole("PARTNER")
                 )
