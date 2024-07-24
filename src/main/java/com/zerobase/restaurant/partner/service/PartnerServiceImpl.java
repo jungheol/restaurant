@@ -2,7 +2,6 @@ package com.zerobase.restaurant.partner.service;
 
 import com.zerobase.restaurant.auth.type.MemberType;
 import com.zerobase.restaurant.common.exception.CustomException;
-import com.zerobase.restaurant.common.type.ErrorCode;
 import com.zerobase.restaurant.partner.domain.Partner;
 import com.zerobase.restaurant.partner.dto.PartnerDto;
 import com.zerobase.restaurant.partner.dto.RegisterPartner;
