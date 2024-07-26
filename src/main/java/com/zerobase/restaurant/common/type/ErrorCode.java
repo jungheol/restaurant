@@ -15,7 +15,8 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCHED("비밀번호가 일치하지 않습니다."),
     ALREADY_EXISTED_RESTAURANT("이미 사용중인 매장 이름입니다."),
     ALREADY_EXISTED_PARTNER("이미 가입된 파트너명입니다."),
-    ALREADY_EXISTED_CUSTOMER("이미 가입된 회원명입니다.")
+    ALREADY_EXISTED_CUSTOMER("이미 가입된 회원명입니다."),
+    ALREADY_RESERVED_TIME("이미 예약이 마감된 시간입니다.")
     ;
 
     private final String description;
