@@ -5,6 +5,7 @@ import com.zerobase.restaurant.reservation.dto.CreateReservation;
 import com.zerobase.restaurant.reservation.dto.UpdateApprove;
 import com.zerobase.restaurant.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @PostMapping("/create")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PostMapping("/customer/create")
     public CreateReservation.Response createReservation(
             @RequestBody CreateReservation.Request request
     ) {
@@ -24,8 +24,7 @@ public class ReservationController {
                 this.reservationService.createReservation(request));
     }
 
-    @PutMapping("/approve/{id}")
-    @PreAuthorize("hasRole('PARTNER')")
+    @PutMapping("/partner/approve/{id}")
     public UpdateApprove.Response updateReservation(
             @PathVariable Long id,
             @RequestBody UpdateApprove.Request request
@@ -34,13 +33,20 @@ public class ReservationController {
                 this.reservationService.updateApprove(id, request));
     }
 
-    @PutMapping("/arrival/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PutMapping("/customer/arrival/{id}")
     public ArrivalCustomer.Response updateArrivalCustomer(
             @PathVariable Long id,
             @RequestBody ArrivalCustomer.Request request
     ) {
         return ArrivalCustomer.Response.from(
                 this.reservationService.arrivalCustomer(id, request));
+    }
+
+    @PutMapping("/customer/cancel")
+    public ResponseEntity<?> cancelReservation(
+            @RequestParam(name = "reservationId") Long reservationId
+    ) {
+        return ResponseEntity.ok(
+                this.reservationService.cancelReservation(reservationId));
     }
 }

@@ -12,4 +12,6 @@ public interface ReservationService {
     ReservationDto updateApprove(Long reservationId, UpdateApprove.Request request);
 
     ReservationDto arrivalCustomer(Long reservationId, ArrivalCustomer.Request request);
+
+    ReservationDto cancelReservation(Long reservationId);
 }

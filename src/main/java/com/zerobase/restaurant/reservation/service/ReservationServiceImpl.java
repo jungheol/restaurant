@@ -24,8 +24,7 @@ import java.time.LocalTime;
 import static com.zerobase.restaurant.common.type.ErrorCode.*;
 import static com.zerobase.restaurant.reservation.type.ApprovedType.APPROVED;
 import static com.zerobase.restaurant.reservation.type.ApprovedType.PENDING_FOR_APPROVE;
-import static com.zerobase.restaurant.reservation.type.ReservationType.CHECK_IN;
-import static com.zerobase.restaurant.reservation.type.ReservationType.PENDING_FOR_RESERVATION;
+import static com.zerobase.restaurant.reservation.type.ReservationType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +33,7 @@ public class ReservationServiceImpl implements ReservationService{
     private final ReservationRepository reservationRepository;
     private final StoreRepository storeRepository;
     private final CustomerRepository customerRepository;
+
     @Override
     @Transactional
     public ReservationDto createReservation(CreateReservation.Request request) {
@@ -78,7 +78,8 @@ public class ReservationServiceImpl implements ReservationService{
         reservation.setReservationType(request.getReservationType());
         reservation.setApprovedType(request.getApprovedType());
 
-        return ReservationDto.fromEntity(this.reservationRepository.save(reservation));
+        return ReservationDto.fromEntity(
+                this.reservationRepository.save(reservation));
     }
 
     @Override
@@ -103,5 +104,17 @@ public class ReservationServiceImpl implements ReservationService{
         } else if (arrivalTime.isAfter(reservation.getReservationTime())) {
             throw new CustomException(TOO_LATE_ARRIVAL_RESERVATION_TIME);
         }
+    }
+
+    @Override
+    @Transactional
+    public ReservationDto cancelReservation(Long reservationId) {
+        Reservation reservation = this.reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new CustomException(RESERVATION_NOT_FOUND));
+
+        reservation.setReservationType(CANCELED);
+
+        return ReservationDto.fromEntity(
+                this.reservationRepository.save(reservation));
     }
 }
