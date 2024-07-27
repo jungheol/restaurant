@@ -38,6 +38,16 @@ public class AuthService implements UserDetailsService {
         return partner;
     }
 
+    public Customer authenticateCustomer(Login login) {
+        Customer customer = checkCustomerName(login.getUsername());
+
+        if (!this.passwordEncoder.matches(login.getPassword(), customer.getPassword())) {
+            throw new CustomException(PASSWORD_NOT_MATCHED);
+        }
+
+        return customer;
+    }
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -63,7 +73,7 @@ public class AuthService implements UserDetailsService {
 
     private Customer checkCustomerName(String username) {
         return this.customerRepository.findByUsername(username)
-                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(CUSTOMER_NOT_FOUND));
     }
 
     private UserDetails createUserDetail(String username, String password, MemberType memberType) {

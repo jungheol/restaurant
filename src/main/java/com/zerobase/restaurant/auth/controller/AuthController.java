@@ -3,6 +3,7 @@ package com.zerobase.restaurant.auth.controller;
 import com.zerobase.restaurant.auth.dto.Login;
 import com.zerobase.restaurant.auth.security.TokenProvider;
 import com.zerobase.restaurant.auth.service.AuthService;
+import com.zerobase.restaurant.customer.domain.Customer;
 import com.zerobase.restaurant.partner.domain.Partner;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,16 @@ public class AuthController {
                 this.tokenProvider.generateToken(
                         partner.getUsername(),
                         partner.getMemberType())
+        );
+    }
+
+    @PostMapping("/customer")
+    public ResponseEntity<?> customerLogin(@RequestBody @Valid Login request) {
+        Customer customer = this.authService.authenticateCustomer(request);
+        return ResponseEntity.ok(
+                this.tokenProvider.generateToken(
+                        customer.getUsername(),
+                        customer.getMemberType())
         );
     }
 }
