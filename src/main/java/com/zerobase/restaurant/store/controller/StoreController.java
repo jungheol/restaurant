@@ -16,7 +16,6 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping("/partner/register")
-    @PreAuthorize("hasRole('PARTNER')")
     public RegisterStore.Response registerStore(
             @RequestBody RegisterStore.Request request
     ) {
@@ -24,7 +23,6 @@ public class StoreController {
     }
 
     @PutMapping("/partner/update/{storeId}")
-    @PreAuthorize("hasRole('PARTNER')")
     public UpdateStore.Response updateStore(
             @PathVariable Long storeId,
             @RequestBody UpdateStore.Request request
@@ -33,7 +31,6 @@ public class StoreController {
     }
 
     @DeleteMapping("/partner/delete")
-    @PreAuthorize("hasRole('PARTNER')")
     public ResponseEntity<?> deleteStore(
             @RequestParam("id") Long partnerId,
             @RequestParam("store") Long storeId
@@ -42,8 +39,7 @@ public class StoreController {
         return ResponseEntity.ok("매장 정보가 삭제되었습니다.");
     }
 
-    @GetMapping("/detail/{storeName}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping("/customer/detail/{storeName}")
     public ResponseEntity<?> detailStore(@PathVariable String storeName) {
         return ResponseEntity.ok(this.storeService.detailStore(storeName));
     }

@@ -28,8 +28,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(
                         authorizeRequests -> authorizeRequests.requestMatchers("/register/**", "/login/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                                .requestMatchers("/store/partner/**").hasRole("PARTNER")
+                                .requestMatchers("/**/customer/**").hasAnyAuthority("CUSTOMER", "PARTNER")
+                                .requestMatchers("/**/partner/**").hasRole("PARTNER")
                 )
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
