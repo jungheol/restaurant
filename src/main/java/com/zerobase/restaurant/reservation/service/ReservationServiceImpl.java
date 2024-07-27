@@ -5,9 +5,10 @@ import com.zerobase.restaurant.common.type.ErrorCode;
 import com.zerobase.restaurant.customer.domain.Customer;
 import com.zerobase.restaurant.customer.repository.CustomerRepository;
 import com.zerobase.restaurant.reservation.domain.Reservation;
+import com.zerobase.restaurant.reservation.dto.ArrivalCustomer;
 import com.zerobase.restaurant.reservation.dto.CreateReservation;
 import com.zerobase.restaurant.reservation.dto.ReservationDto;
-import com.zerobase.restaurant.reservation.dto.UpdateReservation;
+import com.zerobase.restaurant.reservation.dto.UpdateApprove;
 import com.zerobase.restaurant.reservation.repository.ReservationRepository;
 import com.zerobase.restaurant.reservation.type.ApprovedType;
 import com.zerobase.restaurant.reservation.type.ReservationType;
@@ -18,6 +19,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import static com.zerobase.restaurant.common.type.ErrorCode.*;
+import static com.zerobase.restaurant.reservation.type.ApprovedType.APPROVED;
+import static com.zerobase.restaurant.reservation.type.ApprovedType.PENDING_FOR_APPROVE;
+import static com.zerobase.restaurant.reservation.type.ReservationType.CHECK_IN;
+import static com.zerobase.restaurant.reservation.type.ReservationType.PENDING_FOR_RESERVATION;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +55,8 @@ public class ReservationServiceImpl implements ReservationService{
         Reservation reservation = this.reservationRepository.save(Reservation.builder()
                 .customer(customer)
                 .store(store)
-                .reservationType(ReservationType.PENDING)
-                .approvedType(ApprovedType.PENDING)
+                .reservationType(PENDING_FOR_RESERVATION)
+                .approvedType(PENDING_FOR_APPROVE)
                 .reservationDate(request.getReservationDate())
                 .reservationTime(request.getReservationTime())
                 .build());
@@ -58,17 +66,42 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     @Transactional
-    public ReservationDto updateReservation(Long reservationId, UpdateReservation.Request request) {
+    public ReservationDto updateApprove(Long reservationId, UpdateApprove.Request request) {
         Reservation reservation = this.reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(RESERVATION_NOT_FOUND));
 
-        ReservationType type = reservation.getReservationType();
-        if (type.equals(request.getReservationType())) {
-            throw new CustomException(ErrorCode.RESERVATION_TYPE_ERROR);
+        ApprovedType type = reservation.getApprovedType();
+        if (type.equals(request.getApprovedType())) {
+            throw new CustomException(RESERVATION_TYPE_ERROR);
         }
 
         reservation.setReservationType(request.getReservationType());
+        reservation.setApprovedType(request.getApprovedType());
 
         return ReservationDto.fromEntity(this.reservationRepository.save(reservation));
+    }
+
+    @Override
+    @Transactional
+    public ReservationDto arrivalCustomer(Long reservationId, ArrivalCustomer.Request request) {
+        Reservation reservation = this.reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new CustomException(RESERVATION_NOT_FOUND));
+
+        validationReservation(reservation, request.getArrivalTime().toLocalTime());
+
+        reservation.setReservationType(CHECK_IN);
+
+        return ReservationDto.fromEntity(
+                this.reservationRepository.save(reservation));
+    }
+
+    private void validationReservation(Reservation reservation, LocalTime arrivalTime) {
+        if (!reservation.getApprovedType().equals(APPROVED)) {
+            throw new CustomException(RESERVATION_TYPE_ERROR);
+        } else if (arrivalTime.isBefore(reservation.getReservationTime().minusMinutes(10L))) {
+            throw new CustomException(TOO_EARLY_ARRIVAL_RESERVATION_TIME);
+        } else if (arrivalTime.isAfter(reservation.getReservationTime())) {
+            throw new CustomException(TOO_LATE_ARRIVAL_RESERVATION_TIME);
+        }
     }
 }

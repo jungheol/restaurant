@@ -18,7 +18,9 @@ public enum ErrorCode {
     ALREADY_EXISTED_CUSTOMER("이미 가입된 회원명입니다."),
     ALREADY_RESERVED_TIME("이미 예약이 마감된 시간입니다."),
     RESERVATION_NOT_FOUND("예약을 찾을 수 없습니다."),
-    RESERVATION_TYPE_ERROR("예약 타입에 문제가 발생했습니다.")
+    RESERVATION_TYPE_ERROR("예약 타입에 문제가 발생했습니다."),
+    TOO_EARLY_ARRIVAL_RESERVATION_TIME("예약 시간보다 너무 일찍 도착했습니다."),
+    TOO_LATE_ARRIVAL_RESERVATION_TIME("예약 시간보다 너무 늦게 도착했습니다.")
     ;
 
     private final String description;

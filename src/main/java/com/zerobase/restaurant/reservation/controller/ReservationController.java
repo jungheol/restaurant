@@ -1,5 +1,6 @@
 package com.zerobase.restaurant.reservation.controller;
 
+import com.zerobase.restaurant.reservation.dto.ArrivalCustomer;
 import com.zerobase.restaurant.reservation.dto.CreateReservation;
 import com.zerobase.restaurant.reservation.dto.UpdateApprove;
 import com.zerobase.restaurant.reservation.service.ReservationService;
@@ -23,7 +24,7 @@ public class ReservationController {
                 this.reservationService.createReservation(request));
     }
 
-    @PutMapping("/approval/{id}")
+    @PutMapping("/approve/{id}")
     @PreAuthorize("hasRole('PARTNER')")
     public UpdateApprove.Response updateReservation(
             @PathVariable Long id,
@@ -31,5 +32,15 @@ public class ReservationController {
     ) {
         return UpdateApprove.Response.from(
                 this.reservationService.updateApprove(id, request));
+    }
+
+    @PutMapping("/arrival/{id}")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ArrivalCustomer.Response updateArrivalCustomer(
+            @PathVariable Long id,
+            @RequestBody ArrivalCustomer.Request request
+    ) {
+        return ArrivalCustomer.Response.from(
+                this.reservationService.arrivalCustomer(id, request));
     }
 }
