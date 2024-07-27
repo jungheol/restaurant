@@ -1,6 +1,7 @@
 package com.zerobase.restaurant.reservation.dto;
 
 import com.zerobase.restaurant.reservation.type.ApprovedType;
+import com.zerobase.restaurant.reservation.type.ReservationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class UpdateApprove {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
+        private ReservationType reservationType;
         private ApprovedType approvedType;
     }
 
@@ -27,6 +29,7 @@ public class UpdateApprove {
         private Long reservationId;
         private String username;
         private String storeName;
+        private ReservationType reservationType;
         private ApprovedType approvedType;
         private LocalDate reservationDate;
         private LocalTime reservationTime;
@@ -36,6 +39,7 @@ public class UpdateApprove {
                     .reservationId(reservationDto.getReservationId())
                     .username(reservationDto.getUsername())
                     .storeName(reservationDto.getStoreName())
+                    .reservationType(reservationDto.getReservationType())
                     .approvedType(reservationDto.getApprovedType())
                     .reservationDate(reservationDto.getReservationDate())
                     .reservationTime(reservationDto.getReservationTime())

@@ -1,7 +1,7 @@
 package com.zerobase.restaurant.reservation.controller;
 
 import com.zerobase.restaurant.reservation.dto.CreateReservation;
-import com.zerobase.restaurant.reservation.dto.UpdateReservation;
+import com.zerobase.restaurant.reservation.dto.UpdateApprove;
 import com.zerobase.restaurant.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,11 +25,11 @@ public class ReservationController {
 
     @PutMapping("/approval/{id}")
     @PreAuthorize("hasRole('PARTNER')")
-    public UpdateReservation.Response updateReservation(
+    public UpdateApprove.Response updateReservation(
             @PathVariable Long id,
-            @RequestBody UpdateReservation.Request request
+            @RequestBody UpdateApprove.Request request
     ) {
-        return UpdateReservation.Response.from(
-                this.reservationService.updateReservation(id, request));
+        return UpdateApprove.Response.from(
+                this.reservationService.updateApprove(id, request));
     }
 }
