@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ApprovedType {
 
-    PENDING("예약 대기"),
+    PENDING_FOR_APPROVE("승인 대기"),
     APPROVED("예약 승인"),
     REJECTED("예약 거절");
 
