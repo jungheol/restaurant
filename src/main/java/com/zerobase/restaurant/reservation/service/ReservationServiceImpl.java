@@ -7,6 +7,7 @@ import com.zerobase.restaurant.customer.repository.CustomerRepository;
 import com.zerobase.restaurant.reservation.domain.Reservation;
 import com.zerobase.restaurant.reservation.dto.CreateReservation;
 import com.zerobase.restaurant.reservation.dto.ReservationDto;
+import com.zerobase.restaurant.reservation.dto.UpdateReservation;
 import com.zerobase.restaurant.reservation.repository.ReservationRepository;
 import com.zerobase.restaurant.reservation.type.ApprovedType;
 import com.zerobase.restaurant.reservation.type.ReservationType;
@@ -53,5 +54,21 @@ public class ReservationServiceImpl implements ReservationService{
                 .build());
 
         return ReservationDto.fromEntity(reservation);
+    }
+
+    @Override
+    @Transactional
+    public ReservationDto updateReservation(Long reservationId, UpdateReservation.Request request) {
+        Reservation reservation = this.reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+
+        ReservationType type = reservation.getReservationType();
+        if (type.equals(request.getReservationType())) {
+            throw new CustomException(ErrorCode.RESERVATION_TYPE_ERROR);
+        }
+
+        reservation.setReservationType(request.getReservationType());
+
+        return ReservationDto.fromEntity(this.reservationRepository.save(reservation));
     }
 }
