@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum MemberType {
+
     CUSTOMER("ROLE_CUSTOMER"),
     PARTNER("ROLE_PARTNER");
 
