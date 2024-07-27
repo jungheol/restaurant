@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum ErrorCode {
     INTERNAL_SERVER_ERROR("내부 서버 오류가 발생했습니다."),
     INVALID_REQUEST("잘못된 요청입니다."),
-    USER_NOT_FOUND("회원을 찾을 수 없습니다."),
+    CUSTOMER_NOT_FOUND("회원을 찾을 수 없습니다."),
     PARTNER_NOT_FOUND("파트너를 찾을 수 없습니다."),
     STORE_NOT_FOUND("매장을 찾을 수 없습니다."),
     STORE_NOT_MATCH_MANAGER("파트너 본인의 매장이 아닙니다."),

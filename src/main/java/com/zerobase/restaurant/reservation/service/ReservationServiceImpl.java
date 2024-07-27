@@ -1,7 +1,6 @@
 package com.zerobase.restaurant.reservation.service;
 
 import com.zerobase.restaurant.common.exception.CustomException;
-import com.zerobase.restaurant.common.type.ErrorCode;
 import com.zerobase.restaurant.customer.domain.Customer;
 import com.zerobase.restaurant.customer.repository.CustomerRepository;
 import com.zerobase.restaurant.reservation.domain.Reservation;
@@ -11,7 +10,6 @@ import com.zerobase.restaurant.reservation.dto.ReservationDto;
 import com.zerobase.restaurant.reservation.dto.UpdateApprove;
 import com.zerobase.restaurant.reservation.repository.ReservationRepository;
 import com.zerobase.restaurant.reservation.type.ApprovedType;
-import com.zerobase.restaurant.reservation.type.ReservationType;
 import com.zerobase.restaurant.store.domain.Store;
 import com.zerobase.restaurant.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +36,10 @@ public class ReservationServiceImpl implements ReservationService{
     @Transactional
     public ReservationDto createReservation(CreateReservation.Request request) {
         Store store = this.storeRepository.findById(request.getStoreId())
-                .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(STORE_NOT_FOUND));
 
         Customer customer = this.customerRepository.findById(request.getUserId())
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(CUSTOMER_NOT_FOUND));
 
         LocalDateTime reserveTime = LocalDateTime.of(
                 request.getReservationDate(), request.getReservationTime());
@@ -49,7 +47,7 @@ public class ReservationServiceImpl implements ReservationService{
         boolean exists = this.reservationRepository.existsReservationTime(reserveTime);
 
         if (exists) {
-            throw new CustomException(ErrorCode.ALREADY_RESERVED_TIME);
+            throw new CustomException(ALREADY_RESERVED_TIME);
         }
 
         Reservation reservation = this.reservationRepository.save(Reservation.builder()

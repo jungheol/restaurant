@@ -2,7 +2,6 @@ package com.zerobase.restaurant.customer.service;
 
 import com.zerobase.restaurant.auth.type.MemberType;
 import com.zerobase.restaurant.common.exception.CustomException;
-import com.zerobase.restaurant.common.type.ErrorCode;
 import com.zerobase.restaurant.customer.domain.Customer;
 import com.zerobase.restaurant.customer.dto.CustomerDto;
 import com.zerobase.restaurant.customer.dto.RegisterCustomer;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.zerobase.restaurant.common.type.ErrorCode.ALREADY_EXISTED_CUSTOMER;
-import static com.zerobase.restaurant.common.type.ErrorCode.USER_NOT_FOUND;
+import static com.zerobase.restaurant.common.type.ErrorCode.CUSTOMER_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -45,7 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto detailCustomer(Long userId) {
         Customer customer = this.customerRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(CUSTOMER_NOT_FOUND));
 
         return CustomerDto.fromEntity(customer);
     }
