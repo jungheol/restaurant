@@ -2,6 +2,7 @@ package com.zerobase.restaurant.reservation.controller;
 
 import com.zerobase.restaurant.reservation.dto.ArrivalCustomer;
 import com.zerobase.restaurant.reservation.dto.CreateReservation;
+import com.zerobase.restaurant.reservation.dto.FindReservation;
 import com.zerobase.restaurant.reservation.dto.UpdateApprove;
 import com.zerobase.restaurant.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -26,20 +27,20 @@ public class ReservationController {
 
     @PutMapping("/partner/approve/{id}")
     public UpdateApprove.Response updateReservation(
-            @PathVariable Long id,
+            @PathVariable Long reservationId,
             @RequestBody UpdateApprove.Request request
     ) {
         return UpdateApprove.Response.from(
-                this.reservationService.updateApprove(id, request));
+                this.reservationService.updateApprove(reservationId, request));
     }
 
     @PutMapping("/customer/arrival/{id}")
     public ArrivalCustomer.Response updateArrivalCustomer(
-            @PathVariable Long id,
+            @PathVariable Long reservationId,
             @RequestBody ArrivalCustomer.Request request
     ) {
         return ArrivalCustomer.Response.from(
-                this.reservationService.arrivalCustomer(id, request));
+                this.reservationService.arrivalCustomer(reservationId, request));
     }
 
     @PutMapping("/customer/cancel")
@@ -48,5 +49,11 @@ public class ReservationController {
     ) {
         return ResponseEntity.ok(
                 this.reservationService.cancelReservation(reservationId));
+    }
+
+    @GetMapping("/partner/reservation-list/{id}")
+    public FindReservation getReservationList(@PathVariable Long storeId) {
+        return FindReservation.from(
+                this.reservationService.findReservations(storeId));
     }
 }

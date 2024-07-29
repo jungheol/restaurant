@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 import static com.zerobase.restaurant.common.type.ErrorCode.*;
 import static com.zerobase.restaurant.reservation.type.ApprovedType.APPROVED;
@@ -114,5 +115,17 @@ public class ReservationServiceImpl implements ReservationService{
 
         return ReservationDto.fromEntity(
                 this.reservationRepository.save(reservation));
+    }
+
+    @Override
+    public List<Reservation> findReservations(Long storeId) {
+        List<Reservation> reservations =
+                this. reservationRepository.findReservationsByStoreId(storeId);
+
+        if (reservations.isEmpty()) {
+            throw new CustomException(RESERVATION_NOT_FOUND);
+        }
+
+        return reservations;
     }
 }
