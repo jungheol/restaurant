@@ -1,5 +1,6 @@
 package com.zerobase.restaurant.store.service;
 
+import com.zerobase.restaurant.store.dto.DetailStore;
 import com.zerobase.restaurant.store.dto.RegisterStore;
 import com.zerobase.restaurant.store.dto.StoreDto;
 import com.zerobase.restaurant.store.dto.UpdateStore;
@@ -9,7 +10,7 @@ public interface StoreService {
 
     void deleteStore(Long storeId, Long partnerId);
 
-    StoreDto detailStore(String storeName);
+    DetailStore detailStore(String storeName);
 
     StoreDto updateStore(Long storeId, UpdateStore.Request request);
 }

@@ -4,6 +4,7 @@ import com.zerobase.restaurant.common.exception.CustomException;
 import com.zerobase.restaurant.partner.domain.Partner;
 import com.zerobase.restaurant.partner.repository.PartnerRepository;
 import com.zerobase.restaurant.store.domain.Store;
+import com.zerobase.restaurant.store.dto.DetailStore;
 import com.zerobase.restaurant.store.dto.RegisterStore;
 import com.zerobase.restaurant.store.dto.StoreDto;
 import com.zerobase.restaurant.store.dto.UpdateStore;
@@ -75,9 +76,9 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreDto detailStore(String storeName) {
+    public DetailStore detailStore(String storeName) {
         Store store = checkStoreName(storeName);
-        return StoreDto.fromEntity(store);
+        return DetailStore.from(store);
     }
 
     private Store checkStoreName(String storeName) {
