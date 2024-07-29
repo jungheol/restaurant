@@ -25,18 +25,18 @@ public class ReservationController {
                 this.reservationService.createReservation(request));
     }
 
-    @PutMapping("/partner/approve/{id}")
+    @PutMapping("/partner/approve/{reservationId}")
     public UpdateApprove.Response updateReservation(
-            @PathVariable Long reservationId,
+            @PathVariable("reservationId") Long reservationId,
             @RequestBody UpdateApprove.Request request
     ) {
         return UpdateApprove.Response.from(
                 this.reservationService.updateApprove(reservationId, request));
     }
 
-    @PutMapping("/customer/arrival/{id}")
+    @PutMapping("/customer/arrival/{reservationId}")
     public ArrivalCustomer.Response updateArrivalCustomer(
-            @PathVariable Long reservationId,
+            @PathVariable("reservationId") Long reservationId,
             @RequestBody ArrivalCustomer.Request request
     ) {
         return ArrivalCustomer.Response.from(
@@ -51,8 +51,8 @@ public class ReservationController {
                 this.reservationService.cancelReservation(reservationId));
     }
 
-    @GetMapping("/partner/reservation-list/{id}")
-    public FindReservation getReservationList(@PathVariable Long storeId) {
+    @GetMapping("/partner/reservation-list/{storeId}")
+    public FindReservation getReservationList(@PathVariable("storeId") Long storeId) {
         return FindReservation.from(
                 this.reservationService.findReservations(storeId));
     }
