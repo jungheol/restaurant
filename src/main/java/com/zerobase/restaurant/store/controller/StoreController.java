@@ -32,15 +32,15 @@ public class StoreController {
 
     @DeleteMapping("/partner/delete")
     public ResponseEntity<?> deleteStore(
-            @RequestParam("id") Long partnerId,
-            @RequestParam("store") Long storeId
+            @RequestParam("storeId") Long storeId,
+            @RequestParam("partnerId") Long partnerId
     ) {
         this.storeService.deleteStore(storeId, partnerId);
         return ResponseEntity.ok("매장 정보가 삭제되었습니다.");
     }
 
     @GetMapping("/customer/detail/{storeName}")
-    public ResponseEntity<?> detailStore(@PathVariable String storeName) {
+    public ResponseEntity<?> detailStore(@PathVariable("storeName") String storeName) {
         return ResponseEntity.ok(this.storeService.detailStore(storeName));
     }
 }
