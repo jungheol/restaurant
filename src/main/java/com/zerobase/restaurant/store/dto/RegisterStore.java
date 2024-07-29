@@ -26,10 +26,14 @@ public class RegisterStore {
     @AllArgsConstructor
     public static class Response {
         private String storeName;
+        private String address;
+        private String description;
 
         public static Response from(StoreDto storeDto) {
             return Response.builder()
                     .storeName(storeDto.getStoreName())
+                    .address(storeDto.getAddress())
+                    .description(storeDto.getDescription())
                     .build();
         }
     }
