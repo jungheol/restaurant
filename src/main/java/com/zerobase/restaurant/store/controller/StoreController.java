@@ -24,7 +24,7 @@ public class StoreController {
 
     @PutMapping("/partner/update/{storeId}")
     public UpdateStore.Response updateStore(
-            @PathVariable Long storeId,
+            @PathVariable("storeId") Long storeId,
             @RequestBody UpdateStore.Request request
     ) {
         return UpdateStore.Response.from(this.storeService.updateStore(storeId, request));
