@@ -13,17 +13,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerDto {
     private Long id;
+    private String email;
+    private String password;
     private String username;
     private MemberType memberType;
-    private String password;
     private String phoneNumber;
 
     public static CustomerDto fromEntity(Customer customer) {
         return CustomerDto.builder()
                 .id(customer.getId())
+                .email(customer.getEmail())
+                .password(customer.getPassword())
                 .username(customer.getUsername())
                 .memberType(customer.getMemberType())
-                .password(customer.getPassword())
                 .phoneNumber(customer.getPhoneNumber())
                 .build();
     }

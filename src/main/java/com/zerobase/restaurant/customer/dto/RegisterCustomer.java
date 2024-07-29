@@ -10,14 +10,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterCustomer {
-    private String username;
+    private String email;
     private String password;
+    private String username;
     private String phoneNumber;
 
     public RegisterCustomer from(CustomerDto customerDto) {
         return RegisterCustomer.builder()
-                .username(customerDto.getUsername())
+                .email(customerDto.getEmail())
                 .password(customerDto.getPassword())
+                .username(customerDto.getUsername())
                 .phoneNumber(customerDto.getPhoneNumber())
                 .build();
     }

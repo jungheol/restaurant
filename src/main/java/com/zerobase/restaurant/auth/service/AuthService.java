@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.zerobase.restaurant.auth.type.MemberType.CUSTOMER;
+import static com.zerobase.restaurant.auth.type.MemberType.PARTNER;
 import static com.zerobase.restaurant.common.type.ErrorCode.*;
 
 @Slf4j
@@ -29,7 +31,7 @@ public class AuthService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     public Partner authenticatePartner(Login login) {
-        Partner partner = checkPartnerName(login.getUsername());
+        Partner partner = checkPartnerEmail(login.getEmail());
 
         if (!this.passwordEncoder.matches(login.getPassword(), partner.getPassword())) {
             throw new CustomException(PASSWORD_NOT_MATCHED);
@@ -39,7 +41,7 @@ public class AuthService implements UserDetailsService {
     }
 
     public Customer authenticateCustomer(Login login) {
-        Customer customer = checkCustomerName(login.getUsername());
+        Customer customer = checkCustomerEmail(login.getEmail());
 
         if (!this.passwordEncoder.matches(login.getPassword(), customer.getPassword())) {
             throw new CustomException(PASSWORD_NOT_MATCHED);
@@ -50,29 +52,29 @@ public class AuthService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (this.partnerRepository.existsByUsername(username)) {
-            Partner partner = checkPartnerName(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        if (this.partnerRepository.existsByEmail(email)) {
+            Partner partner = checkPartnerEmail(email);
 
-            return createUserDetail(partner.getUsername(),
-                    partner.getPassword(), MemberType.PARTNER);
-        } else if (this.customerRepository.existsByUsername(username)) {
-            Customer customer = checkCustomerName(username);
+            return createUserDetail(partner.getEmail(),
+                    partner.getPassword(), PARTNER);
+        } else if (this.customerRepository.existsByEmail(email)) {
+            Customer customer = checkCustomerEmail(email);
 
-            return createUserDetail(customer.getUsername(),
-                    customer.getPassword(), MemberType.CUSTOMER);
+            return createUserDetail(customer.getEmail(),
+                    customer.getPassword(), CUSTOMER);
         }
 
-        throw new UsernameNotFoundException("USER not found with username: " + username);
+        throw new UsernameNotFoundException("USER not found with email: " + email);
     }
 
-    private Partner checkPartnerName(String username) {
-        return this.partnerRepository.findByUsername(username)
+    private Partner checkPartnerEmail(String email) {
+        return this.partnerRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(PARTNER_NOT_FOUND));
     }
 
-    private Customer checkCustomerName(String username) {
-        return this.customerRepository.findByUsername(username)
+    private Customer checkCustomerEmail(String email) {
+        return this.customerRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(CUSTOMER_NOT_FOUND));
     }
 

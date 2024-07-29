@@ -11,16 +11,18 @@ import lombok.*;
 @AllArgsConstructor
 public class PartnerDto {
     private Long id;
+    private String email;
+    private String password;
     private String username;
     private MemberType memberType;
-    private String password;
 
     public static PartnerDto fromEntity(Partner partner) {
         return PartnerDto.builder()
                 .id(partner.getId())
+                .email(partner.getEmail())
+                .password(partner.getPassword())
                 .username(partner.getUsername())
                 .memberType(partner.getMemberType())
-                .password(partner.getPassword())
                 .build();
     }
 

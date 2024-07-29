@@ -26,7 +26,7 @@ public class AuthController {
         Partner partner = this.authService.authenticatePartner(request);
         return ResponseEntity.ok(
                 this.tokenProvider.generateToken(
-                        partner.getUsername(),
+                        partner.getEmail(),
                         partner.getMemberType())
         );
     }
@@ -36,7 +36,7 @@ public class AuthController {
         Customer customer = this.authService.authenticateCustomer(request);
         return ResponseEntity.ok(
                 this.tokenProvider.generateToken(
-                        customer.getUsername(),
+                        customer.getEmail(),
                         customer.getMemberType())
         );
     }

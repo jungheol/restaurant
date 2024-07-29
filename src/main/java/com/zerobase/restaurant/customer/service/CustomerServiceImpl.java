@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public CustomerDto register(RegisterCustomer user) {
-        boolean exists = this.customerRepository.existsByUsername(user.getUsername());
+        boolean exists = this.customerRepository.existsByEmail(user.getEmail());
         if (exists) {
             throw new CustomException(ALREADY_EXISTED_CUSTOMER);
         }
@@ -32,10 +32,11 @@ public class CustomerServiceImpl implements CustomerService {
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
         Customer customer = this.customerRepository.save(Customer.builder()
-                .username(user.getUsername())
+                .email(user.getEmail())
                 .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
+                .username(user.getUsername())
                 .memberType(MemberType.CUSTOMER)
+                .phoneNumber(user.getPhoneNumber())
                 .build());
 
         return CustomerDto.fromEntity(customer);

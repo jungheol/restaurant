@@ -23,7 +23,7 @@ public class PartnerServiceImpl implements PartnerService {
     @Override
     @Transactional
     public PartnerDto register(RegisterPartner user) {
-        boolean exists = this.partnerRepository.existsByUsername(user.getUsername());
+        boolean exists = this.partnerRepository.existsByEmail(user.getEmail());
         if (exists) {
             throw new CustomException(ALREADY_EXISTED_PARTNER);
         }
@@ -31,8 +31,9 @@ public class PartnerServiceImpl implements PartnerService {
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
         Partner partner = this.partnerRepository.save(Partner.builder()
-                .username(user.getUsername())
+                .email(user.getEmail())
                 .password(user.getPassword())
+                .username(user.getUsername())
                 .memberType(MemberType.PARTNER)
                 .build());
 

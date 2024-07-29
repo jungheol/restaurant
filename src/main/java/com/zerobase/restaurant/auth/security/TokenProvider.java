@@ -27,8 +27,8 @@ public class TokenProvider {
     private String secretKey;
 
     // 토큰 생성(발급)
-    public String generateToken(String username, MemberType memberType) {
-        Claims claims = Jwts.claims().setSubject(username);
+    public String generateToken(String email, MemberType memberType) {
+        Claims claims = Jwts.claims().setSubject(email);
         claims.put(KEY_ROLES, memberType);
 
         var now = new Date();
