@@ -21,7 +21,12 @@ public enum ErrorCode {
     RESERVATION_TYPE_ERROR("예약 타입에 문제가 발생했습니다."),
     TOO_EARLY_ARRIVAL_RESERVATION_TIME("예약 시간보다 너무 일찍 도착했습니다."),
     TOO_LATE_ARRIVAL_RESERVATION_TIME("예약 시간보다 너무 늦게 도착했습니다."),
-    REVIEW_NOT_FOUND("리뷰를 찾을 수 없습니다.")
+    REVIEW_NOT_FOUND("리뷰를 찾을 수 없습니다."),
+    REVIEW_RATING_OUT_OF_RANGE("리뷰 점수를 1점에서 5점 사이로 입력해주세요."),
+    REVIEW_TOO_LONG("리뷰 내용을 조금 줄여주세요."),
+    REVIEW_USER_NOT_MATCHED("매장 이용자와 리뷰 작성자가 같지 않습니다."),
+    REVIEW_ALREADY_EXIST("해당 예약건에 대한 리뷰가 이미 존재합니다."),
+    REVIEW_NOT_AVAILABLE("해당 예약건은 리뷰를 쓸 수 있는 상태가 아닙니다.")
     ;
 
     private final String description;
