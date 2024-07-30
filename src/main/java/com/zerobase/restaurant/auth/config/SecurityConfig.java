@@ -30,6 +30,7 @@ public class SecurityConfig {
                         authorizeRequests -> authorizeRequests.requestMatchers("/register/**", "/login/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("**/customer/**").hasAnyAuthority("ROLE_CUSTOMER", "ROLE_PARTNER")
                                 .requestMatchers("**/partner/**").hasRole("PARTNER")
+                                .requestMatchers("/review/update/**").hasRole("CUSTOMER")  // 리뷰 업데이트는 CUSTOMER만 수정할 수 있음.
                 )
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -8,13 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/review/customer")
+@RequestMapping("/review")
 @RequiredArgsConstructor
 public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/create")
+    @PostMapping("/customer/create")
     public CreateReview.Response createReview(
             @RequestParam(name = "userId") Long userId,
             @RequestParam(name = "storeId") Long storeId,
@@ -25,7 +25,7 @@ public class ReviewController {
                 this.reviewService.createReview(userId, storeId, reservationId, request));
     }
 
-    @DeleteMapping("/delete/{reviewId}")
+    @DeleteMapping("/customer/delete/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable("reviewId") Long reviewId) {
         this.reviewService.deleteReview(reviewId);
         return ResponseEntity.ok("해당 리뷰 삭제를 완료했습니다.");
