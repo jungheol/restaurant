@@ -9,6 +9,7 @@ import com.zerobase.restaurant.reservation.repository.ReservationRepository;
 import com.zerobase.restaurant.review.domain.Review;
 import com.zerobase.restaurant.review.dto.CreateReview;
 import com.zerobase.restaurant.review.dto.ReviewDto;
+import com.zerobase.restaurant.review.dto.UpdateReview;
 import com.zerobase.restaurant.review.repository.ReviewRepository;
 import com.zerobase.restaurant.store.domain.Store;
 import com.zerobase.restaurant.store.repository.StoreRepository;
@@ -53,5 +54,18 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReview(Long reviewId) {
         this.reviewRepository.delete(this.reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND)));
+    }
+
+    @Override
+    @Transactional
+    public ReviewDto updateReview(Long reviewId, UpdateReview.Request request) {
+        Review review = this.reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
+
+        review.setReviewContent(request.getReviewContent());
+        review.setRating(request.getRating());
+
+        return ReviewDto.fromEntity(
+                this.reviewRepository.save(review));
     }
 }

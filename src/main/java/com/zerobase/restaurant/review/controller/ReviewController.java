@@ -1,13 +1,14 @@
 package com.zerobase.restaurant.review.controller;
 
 import com.zerobase.restaurant.review.dto.CreateReview;
+import com.zerobase.restaurant.review.dto.UpdateReview;
 import com.zerobase.restaurant.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/review/customer")
 @RequiredArgsConstructor
 public class ReviewController {
 
@@ -28,5 +29,14 @@ public class ReviewController {
     public ResponseEntity<?> deleteReview(@PathVariable("reviewId") Long reviewId) {
         this.reviewService.deleteReview(reviewId);
         return ResponseEntity.ok("해당 리뷰 삭제를 완료했습니다.");
+    }
+
+    @PutMapping("/update/{reviewId}")
+    public UpdateReview.Response updateReview(
+            @PathVariable("reviewId") Long reviewId,
+            @RequestBody UpdateReview.Request request
+    ) {
+        return UpdateReview.Response.from(
+                this.reviewService.updateReview(reviewId, request));
     }
 }
