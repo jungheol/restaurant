@@ -33,6 +33,7 @@ public class ReservationServiceImpl implements ReservationService{
     private final StoreRepository storeRepository;
     private final CustomerRepository customerRepository;
 
+    // 예약 생성
     @Override
     @Transactional
     public ReservationDto createReservation(CreateReservation.Request request) {
@@ -63,6 +64,7 @@ public class ReservationServiceImpl implements ReservationService{
         return ReservationDto.fromEntity(reservation);
     }
 
+    // 예약 승인/거절
     @Override
     @Transactional
     public ReservationDto updateApprove(Long reservationId, UpdateApprove.Request request) {
@@ -81,6 +83,7 @@ public class ReservationServiceImpl implements ReservationService{
                 this.reservationRepository.save(reservation));
     }
 
+    // 방문자 도착
     @Override
     @Transactional
     public ReservationDto arrivalCustomer(Long reservationId, ArrivalCustomer.Request request) {
@@ -95,6 +98,12 @@ public class ReservationServiceImpl implements ReservationService{
                 this.reservationRepository.save(reservation));
     }
 
+    /**
+     * 예약 관련 유효성 검사
+     * 1. 예약 상태 승인(APPROVED) 여부 확인
+     * 2. 예약 시간 10분 이전 도착 여부
+     * 3. 예약 시간 이후 도착 여부
+     */
     private void validationReservation(Reservation reservation, LocalTime arrivalTime) {
         if (!reservation.getApprovedType().equals(APPROVED)) {
             throw new CustomException(RESERVATION_TYPE_ERROR);
@@ -105,6 +114,7 @@ public class ReservationServiceImpl implements ReservationService{
         }
     }
 
+    // 예약 취소
     @Override
     @Transactional
     public ReservationDto cancelReservation(Long reservationId) {
@@ -117,6 +127,7 @@ public class ReservationServiceImpl implements ReservationService{
                 this.reservationRepository.save(reservation));
     }
 
+    // 예약 리스트 조회
     @Override
     public List<Reservation> findReservations(Long storeId) {
         List<Reservation> reservations =
