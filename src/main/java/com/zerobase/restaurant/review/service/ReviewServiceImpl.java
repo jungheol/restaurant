@@ -31,6 +31,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReservationRepository reservationRepository;
     private final ReviewRepository reviewRepository;
 
+    // 리뷰 작성
     @Override
     @Transactional
     public ReviewDto createReview(Long userId, Long storeId, Long reservationId, CreateReview.Request request) {
@@ -56,6 +57,7 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewDto.fromEntity(review);
     }
 
+    // 리뷰 삭제
     @Override
     @Transactional
     public void deleteReview(Long reviewId) {
@@ -63,6 +65,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND)));
     }
 
+    // 리뷰 수정
     @Override
     @Transactional
     public ReviewDto updateReview(Long reviewId, UpdateReview.Request request) {
@@ -78,6 +81,14 @@ public class ReviewServiceImpl implements ReviewService {
                 this.reviewRepository.save(review));
     }
 
+    /**
+     * 리뷰 작성 관련 유효성 검사
+     * 1. 점수가 5점 초과이거나 0점 미만인 경우
+     * 2. 텍스트의 길이가 250자 이상인 경우
+     * 3. 예약한 유저와 리뷰를 쓰려는 유저가 다른 경우
+     * 4. 해당 예약에 대한 리뷰가 존재하는 경우
+     * 5. 해당 리뷰를 쓸 수 있는 상태인지 확인(식당 사용 완료 확인)
+     */
     private void validationCreateReview(Customer customer, Reservation reservation, CreateReview.Request request) {
         if (request.getRating() > 5 || request.getRating() < 0) {
             throw new CustomException(REVIEW_RATING_OUT_OF_RANGE);
@@ -96,6 +107,11 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    /**
+     * 리뷰 수정 관련 유효성 검사
+     * 1. 점수가 5점 초과이거나 0점 미만인 경우
+     * 2. 텍스트의 길이가 250자 이상인 경우
+     */
     private void validationUpdateReview(UpdateReview.Request request) {
         if (request.getRating() > 5 || request.getRating() < 0) {
             throw new CustomException(REVIEW_RATING_OUT_OF_RANGE);
