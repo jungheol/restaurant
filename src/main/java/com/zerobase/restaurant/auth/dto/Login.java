@@ -1,5 +1,6 @@
 package com.zerobase.restaurant.auth.dto;
 
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Login {
 
+    @Email
     private String email;
 
     private String password;
 
-    private String username;
 }

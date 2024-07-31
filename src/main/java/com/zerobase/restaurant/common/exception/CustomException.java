@@ -4,7 +4,7 @@ import com.zerobase.restaurant.common.type.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class CustomException extends RuntimeException{
+public class CustomException extends RuntimeException {
     private final ErrorCode errorCode;
     private final String errorMessage;
 

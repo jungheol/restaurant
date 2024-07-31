@@ -21,6 +21,14 @@ public class AuthController {
     private final AuthService authService;
     private final TokenProvider tokenProvider;
 
+    /**
+     * 파트너 로그인
+     * @param request 로그인 요청
+     *                - email : 이메일
+     *                - password : 비밀번호
+     * @return 로그인 응답
+     *                - jwtToken : jwt 토큰
+     */
     @PostMapping("/partner")
     public ResponseEntity<?> partnerLogin(@RequestBody @Valid Login request) {
         Partner partner = this.authService.authenticatePartner(request);
@@ -31,6 +39,14 @@ public class AuthController {
         );
     }
 
+    /**
+     * 유저 로그인
+     * @param request 로그인 요청
+     *                - email : 이메일
+     *                - password : 비밀번호
+     * @return 로그인 응답
+     *                - jwtToken : jwt 토큰
+     */
     @PostMapping("/customer")
     public ResponseEntity<?> customerLogin(@RequestBody @Valid Login request) {
         Customer customer = this.authService.authenticateCustomer(request);

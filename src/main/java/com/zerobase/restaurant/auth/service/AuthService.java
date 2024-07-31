@@ -30,6 +30,7 @@ public class AuthService implements UserDetailsService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 파트너 로그인 시 패스워드 확인
     public Partner authenticatePartner(Login login) {
         Partner partner = checkPartnerEmail(login.getEmail());
 
@@ -40,6 +41,7 @@ public class AuthService implements UserDetailsService {
         return partner;
     }
 
+    // 유저 로그인 시 패스워드 확인
     public Customer authenticateCustomer(Login login) {
         Customer customer = checkCustomerEmail(login.getEmail());
 
@@ -50,6 +52,7 @@ public class AuthService implements UserDetailsService {
         return customer;
     }
 
+    // 파트너 및 유저의 email을 이용하여 일치하는 파트너 및 유저의 정보 반환
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -68,11 +71,13 @@ public class AuthService implements UserDetailsService {
         throw new UsernameNotFoundException("USER not found with email: " + email);
     }
 
+    // 해당 이메일로 가입된 파트너 있는지 확인
     private Partner checkPartnerEmail(String email) {
         return this.partnerRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(PARTNER_NOT_FOUND));
     }
 
+    // 해당 이메일로 가입된 유저 있는지 확인
     private Customer checkCustomerEmail(String email) {
         return this.customerRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(CUSTOMER_NOT_FOUND));
