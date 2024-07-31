@@ -5,7 +5,7 @@ import com.zerobase.restaurant.customer.dto.RegisterCustomer;
 
 public interface CustomerService {
 
+    // 유저 회원 가입
     CustomerDto register(RegisterCustomer user);
 
-    CustomerDto detailCustomer(Long userId);
 }

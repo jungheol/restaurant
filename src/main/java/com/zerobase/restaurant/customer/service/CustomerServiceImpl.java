@@ -21,6 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
 
+    // 유저 회원 가입
     @Override
     @Transactional
     public CustomerDto register(RegisterCustomer user) {
@@ -38,14 +39,6 @@ public class CustomerServiceImpl implements CustomerService {
                 .memberType(MemberType.CUSTOMER)
                 .phoneNumber(user.getPhoneNumber())
                 .build());
-
-        return CustomerDto.fromEntity(customer);
-    }
-
-    @Override
-    public CustomerDto detailCustomer(Long userId) {
-        Customer customer = this.customerRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(CUSTOMER_NOT_FOUND));
 
         return CustomerDto.fromEntity(customer);
     }

@@ -13,17 +13,21 @@ public class PartnerController {
 
     private final PartnerService partnerService;
 
+    /**
+     * 파트너 회원 가입
+     * @param request 파트너 회원 가입 요청
+     *                - email : 이메일
+     *                - password : 비밀번호
+     *                - username : 이름
+     * @return 파트너 회원 가입 결과
+     *                - email : 이메일
+     *                - password : 암호화 된 비밀번호
+     *                - username : 이름
+     */
     @PostMapping("/register/partner")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterPartner request) {
         return ResponseEntity.ok().body(
                 request.from(this.partnerService.register(request))
         );
     }
-
-    @GetMapping("/partner/info")
-    public ResponseEntity<?> getPartnerInfo(@RequestParam("id") @Valid Long id) {
-        return ResponseEntity.ok(this.partnerService.detailPartner(id));
-    }
-
-
 }

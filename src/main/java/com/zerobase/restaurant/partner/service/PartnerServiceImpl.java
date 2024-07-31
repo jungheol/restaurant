@@ -20,6 +20,7 @@ public class PartnerServiceImpl implements PartnerService {
     private final PasswordEncoder passwordEncoder;
     private final PartnerRepository partnerRepository;
 
+    // 파트너 회원 가입
     @Override
     @Transactional
     public PartnerDto register(RegisterPartner user) {
@@ -36,14 +37,6 @@ public class PartnerServiceImpl implements PartnerService {
                 .username(user.getUsername())
                 .memberType(MemberType.PARTNER)
                 .build());
-
-        return PartnerDto.fromEntity(partner);
-    }
-
-    @Override
-    public PartnerDto detailPartner(Long userId) {
-        Partner partner = this.partnerRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(PARTNER_NOT_FOUND));
 
         return PartnerDto.fromEntity(partner);
     }
