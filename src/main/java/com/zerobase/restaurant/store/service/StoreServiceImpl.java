@@ -16,18 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.zerobase.restaurant.common.type.ErrorCode.*;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StoreServiceImpl implements StoreService {
 
     private final StoreRepository storeRepository;
     private final PartnerRepository partnerRepository;
+
+    // 식당 등록
     @Override
     @Transactional
     public StoreDto registerStore(RegisterStore.Request request) {
-        log.info("매장 등록 시작");
-
         Partner partner = this.partnerRepository.findById(request.getPartnerId())
                         .orElseThrow(() -> new CustomException(PARTNER_NOT_FOUND));
 
@@ -35,7 +34,6 @@ public class StoreServiceImpl implements StoreService {
             throw new CustomException(ALREADY_EXISTED_RESTAURANT);
         }
 
-        log.info("매장 등록 완료");
         return StoreDto.fromEntity(this.storeRepository.save(Store.builder()
                 .partner(partner)
                 .storeName(request.getStoreName())
@@ -44,6 +42,7 @@ public class StoreServiceImpl implements StoreService {
                 .build()));
     }
 
+    // 식당 삭제
     @Override
     @Transactional
     public void deleteStore(Long storeId, Long partnerId) {
@@ -54,10 +53,10 @@ public class StoreServiceImpl implements StoreService {
             throw new CustomException(STORE_NOT_MATCH_MANAGER);
         }
 
-        log.info("매장 정보 삭제 완료");
         this.storeRepository.delete(store);
     }
 
+    // 식당 정보 수정
     @Override
     @Transactional
     public StoreDto updateStore(Long storeId, UpdateStore.Request request) {
@@ -75,12 +74,14 @@ public class StoreServiceImpl implements StoreService {
         return StoreDto.fromEntity(this.storeRepository.save(store));
     }
 
+    // 식당 정보 조회
     @Override
     public DetailStore detailStore(String storeName) {
         Store store = checkStoreName(storeName);
         return DetailStore.from(store);
     }
 
+    // 등록된 식당인지 확인
     private Store checkStoreName(String storeName) {
         return this.storeRepository.findByStoreName(storeName)
                 .orElseThrow(() -> new CustomException(STORE_NOT_FOUND));
